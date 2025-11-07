@@ -114,7 +114,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { Card, ListCard } from '../layout'
+import { Card } from '../layout'
 import { CardHeader, CardBody, CardActions } from '../layout/card-components'
 import { Button, Icon, Text, Input } from '../basics'
 import { ExerciseLibrary, ExerciseConfigForm, WorkoutSummary } from './index'
