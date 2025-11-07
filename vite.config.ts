@@ -11,6 +11,7 @@ export default defineConfig({
     vueDevTools(),
   ],
   resolve: {
+    // Set up @ alias to reference src directory for cleaner imports
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
