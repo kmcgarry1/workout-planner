@@ -1,4 +1,4 @@
-export { default as WorkoutList } from "./WorkoutList.vue";
+export { default as WorkoutList } from './WorkoutList.vue'
 export { default as ExerciseLibrary } from './ExerciseLibrary.vue'
 export { default as ExerciseConfigForm } from './ExerciseConfigForm.vue'
 export { default as WorkoutSummary } from './WorkoutSummary.vue'
