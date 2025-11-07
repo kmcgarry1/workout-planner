@@ -139,7 +139,7 @@ function handleExerciseSelect(exercise: Exercise) {
 
 function handleAddExercise(data: { exercise: Exercise; sets: ExerciseSet[]; notes?: string }) {
   const workoutExercise: WorkoutExercise = {
-    id: `we-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `we-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
     exerciseId: data.exercise.id,
     exercise: data.exercise,
     sets: data.sets,
