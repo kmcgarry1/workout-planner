@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { Card, ListCard } from '../layout'
+import { Card } from '../layout'
 import { CardHeader, CardBody } from '../layout/card-components'
 import { Button, Icon, Text } from '../basics'
 import type { Workout } from '../../../types/workout'

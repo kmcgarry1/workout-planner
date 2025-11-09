@@ -3,7 +3,6 @@
     Selectable workout list built from ListCard with search filtering.
     Usage:
     <WorkoutList v-model="selected" :workouts="workouts" />
-    <WorkoutList v-model="selected" :workouts="workouts" />
     Supports searching by title, subtitle, duration, focus, intensity.
 -->
 <template>
