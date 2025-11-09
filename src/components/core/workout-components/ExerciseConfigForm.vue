@@ -10,13 +10,44 @@
   />
 -->
 <template>
-  <div class="space-y-4">
+  <div class="space-y-5">
     <!-- Exercise info header -->
-    <div class="pb-3 border-b border-gray-200 dark:border-gray-700">
-      <Text variant="title" class="text-gray-900 dark:text-white">{{ exercise.name }}</Text>
-      <Text variant="subtitle" class="text-gray-600 dark:text-gray-400">
-        {{ exercise.type === 'strength' ? 'Strength Training' : 'Conditioning' }}
-      </Text>
+    <div class="pb-4 border-b-2 border-gray-200 dark:border-gray-700">
+      <div class="flex items-start gap-3">
+        <div :class="[
+          'p-3 rounded-xl',
+          exercise.type === 'strength' 
+            ? 'bg-red-100 dark:bg-red-950' 
+            : 'bg-emerald-100 dark:bg-emerald-950'
+        ]">
+          <Icon 
+            :name="exercise.icon || (exercise.type === 'strength' ? 'star' : 'spinner')" 
+            variant="fill" 
+            size="lg" 
+            :class="[
+              exercise.type === 'strength'
+                ? 'text-red-600 dark:text-red-400'
+                : 'text-emerald-600 dark:text-emerald-400'
+            ]"
+          />
+        </div>
+        <div class="flex-1">
+          <Text variant="title" class="text-gray-900 dark:text-white font-bold mb-1">{{ exercise.name }}</Text>
+          <div class="flex items-center gap-2">
+            <span :class="[
+              'inline-flex items-center px-2 py-1 rounded-md text-xs font-bold uppercase tracking-wider',
+              exercise.type === 'strength' 
+                ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' 
+                : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300'
+            ]">
+              {{ exercise.type === 'strength' ? 'Strength' : 'Conditioning' }}
+            </span>
+            <Text variant="subtitle" class="text-gray-600 dark:text-gray-400">
+              {{ exercise.category }}
+            </Text>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Number of sets -->
@@ -26,34 +57,41 @@
         label="Number of Sets"
         type="number"
         variant="filled"
-        size="md"
+        size="lg"
         placeholder="e.g., 3"
-      />
+        class="font-semibold"
+      >
+        <template #leading>
+          <span class="text-gray-600 dark:text-gray-400 font-bold">#</span>
+        </template>
+      </Input>
     </div>
 
     <!-- Strength-specific fields -->
-    <div v-if="exercise.type === 'strength'" class="space-y-4">
+    <div v-if="exercise.type === 'strength'" class="space-y-4 p-4 bg-red-50 dark:bg-red-950/20 rounded-xl border-2 border-red-200 dark:border-red-900/50">
       <div class="grid grid-cols-2 gap-3">
         <Input
           v-model="reps"
           label="Reps per Set"
           type="number"
           variant="filled"
-          size="md"
+          size="lg"
           placeholder="e.g., 10"
+          class="font-semibold"
         />
         <Input
           v-model="weight"
           label="Weight"
           type="number"
           variant="filled"
-          size="md"
+          size="lg"
           placeholder="e.g., 135"
+          class="font-semibold"
         >
           <template #trailing>
             <select
               v-model="weightUnit"
-              class="text-sm bg-transparent border-none focus:ring-0 text-gray-600 dark:text-gray-400 cursor-pointer"
+              class="text-sm font-bold bg-transparent border-none focus:ring-0 text-red-700 dark:text-red-300 cursor-pointer pr-1"
             >
               <option value="lbs">lbs</option>
               <option value="kg">kg</option>
@@ -64,15 +102,16 @@
     </div>
 
     <!-- Conditioning-specific fields -->
-    <div v-if="exercise.type === 'conditioning'" class="space-y-4">
+    <div v-if="exercise.type === 'conditioning'" class="space-y-4 p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border-2 border-emerald-200 dark:border-emerald-900/50">
       <Input
         v-model="timeSeconds"
         label="Time per Set (seconds)"
         type="number"
         variant="filled"
-        size="md"
+        size="lg"
         placeholder="e.g., 60"
-        helper="Enter duration in seconds"
+        helper="Duration for each set"
+        class="font-semibold"
       />
     </div>
 
@@ -85,34 +124,34 @@
         variant="filled"
         size="md"
         placeholder="e.g., 90"
-        helper="Optional"
+        helper="Recovery time between sets"
       />
     </div>
 
     <!-- Notes -->
     <div>
-      <label class="block mb-1 font-medium text-sm text-gray-700 dark:text-gray-300">Notes (optional)</label>
+      <label class="block mb-2 font-semibold text-sm text-gray-700 dark:text-gray-300">Notes (optional)</label>
       <textarea
         v-model="notes"
-        rows="2"
-        placeholder="Add any notes about form, tempo, etc."
-        class="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 border border-transparent rounded-md 
-               focus:border-blue-500 focus:ring-2 focus:ring-blue-500 
+        rows="3"
+        placeholder="Add notes about form, tempo, RPE..."
+        class="w-full px-3 py-2.5 text-sm font-medium bg-gray-100 dark:bg-gray-800 border-2 border-transparent rounded-lg 
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
                placeholder:text-gray-400 dark:placeholder:text-gray-500 
                text-gray-900 dark:text-gray-100 
-               transition-colors duration-150 resize-none"
+               transition-all duration-150 resize-none"
       />
     </div>
 
     <!-- Action buttons -->
-    <div class="flex gap-2 pt-2">
-      <Button variant="primary" size="md" @click="handleSubmit" class="flex-1">
+    <div class="flex gap-3 pt-3">
+      <Button variant="primary" size="lg" @click="handleSubmit" class="flex-1 font-bold shadow-lg">
         <template #leading>
           <Icon name="plus" variant="flat" size="sm" />
         </template>
         Add to Workout
       </Button>
-      <Button variant="ghost" size="md" @click="emit('cancel')">
+      <Button variant="ghost" size="lg" @click="emit('cancel')" class="font-semibold">
         Cancel
       </Button>
     </div>

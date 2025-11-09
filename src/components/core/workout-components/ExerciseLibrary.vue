@@ -8,7 +8,7 @@
 <template>
   <div class="space-y-4">
     <!-- Search and filter -->
-    <div class="space-y-2">
+    <div class="space-y-3">
       <Input
         v-model="search"
         variant="filled"
@@ -22,11 +22,12 @@
       </Input>
 
       <!-- Type filter tabs -->
-      <div class="flex gap-2">
+      <div class="flex gap-2 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
         <Button
           :variant="filterType === 'all' ? 'primary' : 'ghost'"
           size="sm"
           @click="filterType = 'all'"
+          class="flex-1 font-semibold"
         >
           All
         </Button>
@@ -34,43 +35,69 @@
           :variant="filterType === 'strength' ? 'primary' : 'ghost'"
           size="sm"
           @click="filterType = 'strength'"
+          class="flex-1 font-semibold"
         >
+          <template #leading>
+            <Icon name="star" variant="flat" size="xs" />
+          </template>
           Strength
         </Button>
         <Button
           :variant="filterType === 'conditioning' ? 'primary' : 'ghost'"
           size="sm"
           @click="filterType = 'conditioning'"
+          class="flex-1 font-semibold"
         >
-          Conditioning
+          <template #leading>
+            <Icon name="spinner" variant="flat" size="xs" />
+          </template>
+          Cardio
         </Button>
       </div>
     </div>
 
     <!-- Exercise list -->
-    <div v-if="filteredExercises.length" class="space-y-2 max-h-96 overflow-y-auto">
+    <div v-if="filteredExercises.length" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin">
       <ListCard
         v-for="exercise in filteredExercises"
         :key="exercise.id"
         :title="exercise.name"
-        :subtitle="`${exercise.category || exercise.type} ${exercise.description ? '• ' + exercise.description : ''}`"
+        :subtitle="exercise.category || exercise.type"
         :leading-icon="exercise.icon || (exercise.type === 'strength' ? 'star' : 'spinner')"
         leading-icon-variant="fill"
         trailing-icon="plus"
         trailing-icon-variant="flat"
-        bg-class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+        :bg-class="exercise.type === 'strength' 
+          ? 'bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-950/30 dark:to-pink-950/30 border-2 border-red-200 dark:border-red-900/50 hover:border-red-300 dark:hover:border-red-800' 
+          : 'bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border-2 border-emerald-200 dark:border-emerald-900/50 hover:border-emerald-300 dark:hover:border-emerald-800'"
         :divider="false"
         padding="md"
-        rounded="md"
+        rounded="lg"
         :hoverable="true"
         gap-class="gap-3"
         @click="selectExercise(exercise)"
-      />
+      >
+        <template #append>
+          <div class="text-right">
+            <span :class="[
+              'inline-flex items-center px-2 py-1 rounded-md text-xs font-bold uppercase tracking-wider',
+              exercise.type === 'strength' 
+                ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' 
+                : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300'
+            ]">
+              {{ exercise.type === 'strength' ? 'STR' : 'CON' }}
+            </span>
+          </div>
+        </template>
+      </ListCard>
     </div>
 
-    <p v-else class="text-sm text-gray-500 dark:text-gray-400 italic text-center py-4">
-      No exercises match your search.
-    </p>
+    <div v-else class="text-center py-8">
+      <Icon name="search" variant="flat" size="xl" class="text-gray-300 dark:text-gray-700 mx-auto mb-2" />
+      <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+        No exercises match your search
+      </p>
+    </div>
   </div>
 </template>
 
